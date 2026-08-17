@@ -37,7 +37,7 @@ class Particle {
         this.y = posMouse.y;
         this.speedX = Math.random() * 3 - 1;
         this.speedY = Math.random() * 3 - 1;
-        this.size = Math.random() * 15 + 1;
+        this.size = Math.random() * 15 + 10;
         this.color = `hsl(${hue}, 100%, 50%)`;
     }
     update() {
@@ -47,9 +47,10 @@ class Particle {
     }
     drawParticle() {
         ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
+        // ctx.beginPath();
+        // ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        // ctx.fill();
+        ctx.fillRect(this.x, this.y, this.size, this.size);
     }
 }
 
@@ -62,7 +63,7 @@ function showParticle() {
 
 function draw() {
     // ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = `#0001`;
+    ctx.fillStyle = `#0004`;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     showParticle();
     hue++;
