@@ -1,3 +1,7 @@
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+
 const viewRoot = document.querySelector("#app-view");
 
 const routes = {
