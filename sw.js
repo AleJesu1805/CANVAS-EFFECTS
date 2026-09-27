@@ -1,26 +1,3 @@
-// Service Worker de DySToPHy (RAYCASTING-BACKROOMS)
-//
-// Estrategia: "network-first, cache como respaldo", aplicada a CUALQUIER
-// petición GET del mismo origen. No existe un array con la lista de
-// archivos del proyecto: cada archivo que el navegador pida (index.html,
-// css, cada modulo .js, cada imagen, audio, fuente, el worker.js, etc.)
-// se guarda en cache automaticamente la primera vez que se descarga con
-// exito, y se vuelve a sobrescribir en cache cada vez que se vuelve a
-// pedir y hay conexion.
-//
-// Esto resuelve los dos pedidos:
-//   1) No hay que mantener una lista de archivos a mano: se cachea todo
-//      lo que la pagina vaya pidiendo, automaticamente.
-//   2) Nunca se sirve una version vieja mientras haya internet: siempre
-//      se intenta la red primero, y solo si la red falla (sin conexion)
-//      se usa lo que haya en cache como respaldo.
-//
-// Caso especial: audio/video pedidos por rango de bytes (Range). La Cache
-// API no admite guardar respuestas 206 (Partial Content), asi que esas
-// peticiones se resuelven aparte: se baja el archivo COMPLETO una sola vez
-// (sin Range), se cachea entero, y cada pedazo que pida el reproductor se
-// recorta a mano desde esa copia completa.
-
 const CACHE_NAME = "abstract-experience-cache-v1";
 
 // Evita bajar el mismo archivo completo varias veces en paralelo cuando
