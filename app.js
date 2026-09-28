@@ -3,9 +3,15 @@ if ("serviceWorker" in navigator) {
 }
 
 const viewRoot = document.querySelector("#app-view");
+let gameLoadId = 0;
 
 const routes = {
-  arcade: "./views/arcade",
+  arcade: { path: "./views/arcade", kind: "view" },
+  game: {
+    path: "./games/follow-particles",
+    kind: "game",
+    title: "Particle-Canvas",
+  },
 };
 
 function loadViewStyles(viewPath) {
@@ -21,13 +27,19 @@ function loadViewStyles(viewPath) {
 async function loadView() {
   const requestedRoute = window.location.hash.slice(1) || "arcade";
   const route = routes[requestedRoute] ? requestedRoute : "arcade";
-  const viewPath = routes[route];
+  const { path: viewPath, kind, title } = routes[route];
 
   try {
     const response = await fetch(`${viewPath}/index.html`);
     if (!response.ok) throw new Error(`Vista no encontrada: ${route}`);
     viewRoot.innerHTML = await response.text();
     loadViewStyles(viewPath);
+    if (kind === "game") {
+      await import(`${viewPath}/script.js?spa-load=${++gameLoadId}`);
+      document.title = `${title} | Sala de juegos`;
+      return;
+    }
+
     const module = await import(`${viewPath}/view.js`);
     module.mount?.(viewRoot);
     document.title = `${module.title || "Abstract Experience"} | Sala de juegos`;
